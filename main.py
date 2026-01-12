@@ -7,6 +7,15 @@ import io
 # Configuração da página para ocupar mais espaço na tela
 st.set_page_config(page_title="Gestor de Convênio", layout="wide")
 
+# --- ESCONDER MARCAS DO STREAMLIT ---
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # --- CONEXÃO COM BANCO DE DADOS (SQLITE) ---
 def get_database_connection():
