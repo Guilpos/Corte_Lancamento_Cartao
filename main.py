@@ -7,15 +7,24 @@ import io
 # Configuração da página para ocupar mais espaço na tela
 st.set_page_config(page_title="Gestor de Convênio", layout="wide")
 
-# --- ESCONDER MARCAS DO STREAMLIT ---
-hide_st_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
+# CSS para ocultar elementos indesejados
+hide_streamlit_style = """
+<style>
+    /* Ocultar o rodapé padrão "Made with Streamlit" */
+    footer {visibility: hidden;}
+
+    /* Ocultar o Menu Hambúrguer no canto superior direito (opcional, remova se quiser manter) */
+    #MainMenu {visibility: hidden;}
+
+    /* Ocultar especificamente o botão com sua foto/perfil no rodapé (Viewer Badge) */
+    div[class^='viewerBadge'] {display: none;}
+
+    /* Caso a classe mude, esta é uma abordagem mais agressiva para o container do rodapé da cloud */
+    .stApp > header {visibility: hidden;}
+</style>
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # --- CONEXÃO COM BANCO DE DADOS (SQLITE) ---
 def get_database_connection():
@@ -205,8 +214,7 @@ if not df_visualizacao.empty:
     # Filtramos: Mostra se a data de corte OU a data de lançamento for HOJE
     # Usamos .dt.date para garantir que estamos comparando apenas dia/mês/ano (ignorando horas)
     filtro_hoje = (
-            (df_visualizacao['Data de corte'].dt.date == hoje) |
-            (df_visualizacao['Data de lançamento'].dt.date == hoje)
+            df_visualizacao['Data de lançamento'].dt.date == hoje
     )
 
     df_hoje = df_visualizacao[filtro_hoje]
